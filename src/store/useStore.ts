@@ -52,20 +52,56 @@ export const useCartStore = create<CartStore>()(
   )
 );
 
+
+
+interface Toast {
+  id: number;
+  message: string;
+  type: 'success' | 'error';
+}
+
 interface UIStore {
   isCartOpen: boolean;
   isMenuOpen: boolean;
   isMetalRatesOpen: boolean;
+  isSearchOpen: boolean;
+  cartConfetti: boolean;
+  toasts: Toast[];
   setCartOpen: (open: boolean) => void;
   setMenuOpen: (open: boolean) => void;
   setMetalRatesOpen: (open: boolean) => void;
+  setSearchOpen: (open: boolean) => void;
+  setCartConfetti: (val: boolean) => void;
+  addToast: (message: string, type?: 'success' | 'error') => void;
+  removeToast: (id: number) => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
   isCartOpen: false,
   isMenuOpen: false,
   isMetalRatesOpen: false,
+  toasts: [],
+  isSearchOpen: false,
+  cartConfetti: false,
   setCartOpen: (open) => set({ isCartOpen: open }),
   setMenuOpen: (open) => set({ isMenuOpen: open }),
   setMetalRatesOpen: (open) => set({ isMetalRatesOpen: open }),
+  setSearchOpen: (open) => set({ isSearchOpen: open }),
+  setCartConfetti: (val) => set({ cartConfetti: val }),
+  addToast: (message, type = 'success') => {
+    const id = Date.now();
+    set((state) => ({
+      toasts: [...state.toasts, { id, message, type }],
+    }));
+    setTimeout(() => {
+      set((state) => ({
+        toasts: state.toasts.filter((t) => t.id !== id),
+      }));
+    }, 3000);
+  },
+  removeToast: (id) =>
+    set((state) => ({
+      toasts: state.toasts.filter((t) => t.id !== id),
+    })),
 }));
+

@@ -10,9 +10,13 @@ const Cart = lazy(() => import('./pages/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const Success = lazy(() => import('./pages/Success'));
 const FAQ = lazy(() => import('./pages/FAQ'));
+const About = lazy(() => import('./pages/About'));
+const SizeGuide = lazy(() => import('./pages/SizeGuide'));
 const Policies = lazy(() => import('./pages/Policies'));
 const NotFound = lazy(() => import('./pages/NotFound'));
-import { About, Contact } from './pages/StaticPages';
+const PaymentFailed = lazy(() => import('./pages/PaymentFailed'));
+const Account = lazy(() => import('./pages/Account'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/Admin/Login'));
@@ -36,9 +40,12 @@ const LoadingFallback = () => (
   </div>
 );
 
+import ScrollToTop from './components/common/ScrollToTop';
+
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
@@ -49,9 +56,12 @@ export default function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/success" element={<Success />} />
             <Route path="/about" element={<About />} />
+            <Route path="/size-guide" element={<SizeGuide />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/policies/*" element={<Policies />} />
+            <Route path="/payment-failed" element={<PaymentFailed />} />
+            <Route path="/account" element={<Account />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />

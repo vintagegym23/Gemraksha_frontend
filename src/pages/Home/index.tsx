@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Lock, Plus, Search, ShieldCheck, Truck } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -82,9 +82,65 @@ const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const rudrakshaScrollRef = useRef<HTMLDivElement>(null);
+  const braceletsScrollRef = useRef<HTMLDivElement>(null);
+
+  /* Infinite auto-scroll on mobile — pauses if user touches */
+  useEffect(() => {
+    const el = rudrakshaScrollRef.current;
+    if (!el || window.innerWidth >= 768) return;
+
+    let userTouched = false;
+    const onTouch = () => { userTouched = true; };
+    el.addEventListener('touchstart', onTouch, { passive: true });
+
+    const scroll = () => {
+      if (userTouched) return;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10;
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + 170, behavior: 'smooth' });
+    };
+
+    let intervalId: ReturnType<typeof setInterval>;
+    const timeoutId = setTimeout(() => {
+      scroll();
+      intervalId = setInterval(scroll, 3500);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+      el.removeEventListener('touchstart', onTouch);
+    };
+  }, []);
+
+  useEffect(() => {
+    const el = braceletsScrollRef.current;
+    if (!el || window.innerWidth >= 768) return;
+
+    let userTouched = false;
+    const onTouch = () => { userTouched = true; };
+    el.addEventListener('touchstart', onTouch, { passive: true });
+
+    const scroll = () => {
+      if (userTouched) return;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10;
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + 290, behavior: 'smooth' });
+    };
+
+    let intervalId: ReturnType<typeof setInterval>;
+    const timeoutId = setTimeout(() => {
+      scroll();
+      intervalId = setInterval(scroll, 3500);
+    }, 3500);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+      el.removeEventListener('touchstart', onTouch);
+    };
+  }, []);
   const addItem = useCartStore((s) => s.addItem);
-  const addToast = useUIStore((s) => s.addToast);
-  const setCartConfetti = useUIStore((s) => s.setCartConfetti);
+  const { addToast, setCartConfetti, setCartOpen } = useUIStore();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -225,8 +281,8 @@ const Home = () => {
       </section>
 
 
-      {/* ─── DESKTOP-ONLY TICKER BANNER ─── */}
-      <div className="hidden md:block w-full overflow-hidden bg-gradient-to-r from-[#c59d5f] via-[#d0a061] to-[#c59d5f] py-3.5 -mt-px relative z-10">
+      {/* ─── TICKER BANNER ─── */}
+      <div className="w-full overflow-hidden bg-gradient-to-r from-[#c59d5f] via-[#d0a061] to-[#c59d5f] py-3.5 -mt-px relative z-10">
         <div className="flex animate-ticker whitespace-nowrap">
           {/* Duplicate the list twice for seamless infinite loop */}
           {[...Array(2)].map((_, copyIdx) => (
@@ -264,15 +320,9 @@ const Home = () => {
               <div className="h-10 w-[2.5px] bg-[#ecd0a1]" />
               <h2 className="font-serif text-[28px] text-white md:text-5xl">Holy Rudraksha</h2>
             </div>
-            <Link
-              to="/collection?category=rudraksha"
-              className="md:hidden text-[11px] font-bold uppercase tracking-[0.2em] text-[#ecd0a1] hover:text-white transition-colors"
-            >
-              See All
-            </Link>
           </div>
 
-          <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar -mx-2 px-2 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:mx-0 md:px-0">
+          <div ref={rudrakshaScrollRef} className="flex gap-3 overflow-x-auto pb-4 no-scrollbar -mx-2 px-2 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:mx-0 md:px-0">
             {rudrakshaItems.map((item) => (
               <div
                 key={item.id}
@@ -303,8 +353,10 @@ const Home = () => {
                         aria-label={`Add ${item.name} to cart`}
                         onClick={(e) => { 
                           e.stopPropagation();
-                          addItem({ id: item.id, name: item.name, slug: item.slug, price: item.price, images: [item.image], category: 'Rudraksha', details: {}, stock: 10 } as any); 
+                          addItem({ id: item.id, name: item.name, slug: item.slug, price: item.price, images: [item.image], category: 'Rudraksha', details: {}, stock: 10 } as any);
                           addToast(`${item.name} added to cart`);
+                          setCartConfetti(true);
+                          setCartOpen(true);
                         }}
                         className="flex h-7 w-8 items-center justify-center rounded-[7px] bg-[#c59d5f] text-white/90 shadow-sm transition-all hover:bg-[#b88c50] active:scale-95"
                       >
@@ -322,6 +374,16 @@ const Home = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Mobile Bottom "View All" Link */}
+          <div className="flex justify-center mt-5 md:hidden">
+            <Link
+              to="/collection?category=rudraksha"
+              className="px-8 py-3 text-[11px] font-bold uppercase tracking-[0.25em] text-[#ecd0a1] border-2 border-[#ecd0a1] rounded-md active:scale-95 transition-all"
+            >
+              VIEW ALL RUDRAKSHA
+            </Link>
           </div>
 
           {/* Desktop Bottom "View All" Link */}
@@ -343,15 +405,9 @@ const Home = () => {
             <div className="h-8 w-[2.5px] bg-[#d0a061]" />
             <h2 className="font-serif text-[28px] text-primary md:text-4xl">Healing Bracelets</h2>
           </div>
-          <Link
-            to="/collection?category=bracelets"
-            className="md:hidden text-[11px] font-bold uppercase tracking-[0.2em] text-[#d0a061] hover:text-primary transition-colors"
-          >
-            See All
-          </Link>
         </div>
 
-        <div className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar gap-4 pb-6 md:hidden -mx-4 px-4">
+        <div ref={braceletsScrollRef} className="flex snap-x snap-mandatory overflow-x-auto no-scrollbar gap-4 pb-6 md:hidden -mx-4 px-4">
           {healingBracelets.map((bracelet) => (
             <motion.div
               key={bracelet.id}
@@ -436,7 +492,7 @@ const Home = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={(e) => { e.stopPropagation(); addItem({ id: bracelet.id, name: bracelet.name, slug: bracelet.slug, price: bracelet.price, images: [bracelet.image], category: 'Bracelets', details: {}, stock: 10 } as any); addToast(`${bracelet.name} added to cart`); }}
+                    onClick={(e) => { e.stopPropagation(); addItem({ id: bracelet.id, name: bracelet.name, slug: bracelet.slug, price: bracelet.price, images: [bracelet.image], category: 'Bracelets', details: {}, stock: 10 } as any); addToast(`${bracelet.name} added to cart`); setCartConfetti(true); setCartOpen(true); }}
                     className="rounded-full bg-gradient-to-r from-[#c59d5f] to-[#a87940] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white shadow-[0_4px_14px_rgba(197,157,95,0.4)] transition-all hover:from-[#d4ae72] hover:to-[#b98a50] hover:scale-[1.03]"
                   >
                     Buy Now
@@ -445,6 +501,16 @@ const Home = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile Bottom "View All" Link */}
+        <div className="flex justify-center mt-5 md:hidden">
+          <Link
+            to="/collection?category=bracelets"
+            className="px-8 py-3 text-[11px] font-bold uppercase tracking-[0.25em] text-[#d0a061] border-2 border-[#d0a061] rounded-md active:scale-95 transition-all"
+          >
+            VIEW ALL BRACELETS
+          </Link>
         </div>
 
         {/* Desktop Bottom "View All" Link */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, ShoppingBag, Circle, Headset } from 'lucide-react';
+import { Home, ShoppingBag, Circle, PhoneCall } from 'lucide-react';
 import { useUIStore } from '../../store/useStore';
 
 
@@ -16,7 +16,7 @@ const NAV_ITEMS = [
   { id: 'home',       icon: Home,        label: 'Home',        path: '/',           end: true  },
   { id: 'shop',       icon: ShoppingBag, label: 'Shop',        path: '/collection', end: false },
   { id: 'size-guide', icon: Circle,      label: 'Size Guide',  path: '/size-guide', end: false },
-  { id: 'contact',    icon: Headset,     label: 'Contact Us',  path: '/contact',    end: false },
+  { id: 'contact',    icon: PhoneCall,   label: 'Book Call',   path: '/book-call',  end: false },
 ];
 
 export const BottomNav = () => {
@@ -37,7 +37,7 @@ export const BottomNav = () => {
         if (id === 'home') isActive = location.pathname === '/';
         else if (id === 'shop') isActive = location.pathname === '/collection' && !location.search.includes('search');
         else if (id === 'size-guide') isActive = location.pathname === '/size-guide';
-        else if (id === 'contact') isActive = location.pathname.startsWith('/contact');
+        else if (id === 'contact') isActive = location.pathname.startsWith('/book-call');
 
         const handleClick = (e: React.MouseEvent) => {
           // No special handling needed now

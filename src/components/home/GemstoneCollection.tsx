@@ -55,9 +55,6 @@ export const GemstoneCollection: React.FC = () => {
           <div className="h-10 w-1.5 bg-[#d0a061] rounded-full mr-4" />
           <h2 className="text-3xl font-serif text-[#4a154b]">Gemstone Collection</h2>
         </div>
-        <Link to="/collection" className="md:hidden text-[10px] font-bold uppercase tracking-[0.25em] text-[#d0a061] border-b border-[#d0a061]/30 pb-0.5">
-          VIEW ALL
-        </Link>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8">
@@ -118,6 +115,16 @@ export const GemstoneCollection: React.FC = () => {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Mobile Bottom "View All" Link */}
+      <div className="flex justify-center mt-5 md:hidden">
+        <Link
+          to="/collection"
+          className="px-8 py-3 text-[11px] font-bold uppercase tracking-[0.25em] text-[#d0a061] border-2 border-[#d0a061] rounded-md active:scale-95 transition-all"
+        >
+          VIEW ALL GEMSTONES
+        </Link>
       </div>
 
       {/* Desktop Bottom "View All" Link */}

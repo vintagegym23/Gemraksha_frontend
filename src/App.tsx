@@ -17,6 +17,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const PaymentFailed = lazy(() => import('./pages/PaymentFailed'));
 const Account = lazy(() => import('./pages/Account'));
 const Contact = lazy(() => import('./pages/Contact'));
+const BookCall = lazy(() => import('./pages/BookCall'));
 
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/Admin/Login'));
@@ -58,6 +59,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/size-guide" element={<SizeGuide />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/book-call" element={<BookCall />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/policies/*" element={<Policies />} />
             <Route path="/payment-failed" element={<PaymentFailed />} />

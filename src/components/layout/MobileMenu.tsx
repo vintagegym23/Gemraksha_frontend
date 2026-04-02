@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X, ChevronRight, Instagram, Facebook, Twitter, RefreshCw, User, Search, Truck, ShieldAlert, FileText, Lock, Headset, ExternalLink } from 'lucide-react';
+import { X, ChevronRight, Instagram, Facebook, Twitter, RefreshCw, User, Search, Truck, ShieldAlert, FileText, Lock, PhoneCall, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useUIStore, useCartStore } from '../../store/useStore';
 
@@ -110,15 +110,15 @@ export const MobileMenu = () => {
 
               {/* Support Card */}
               <div className="rounded-[20px] border border-[#ead9c5] bg-white px-5 py-5 text-center shadow-sm">
-                <Headset size={22} strokeWidth={1.8} className="mx-auto mb-2 text-[#d0a061]" />
+                <PhoneCall size={22} strokeWidth={1.8} className="mx-auto mb-2 text-[#d0a061]" />
                 <p className="text-[14px] font-bold text-[#251622]">Need assistance?</p>
-                <p className="mt-1 text-[12px] text-[#aaa]">Our gemologists are available 24/7</p>
-                <Link 
+                <p className="mt-1 text-[12px] text-[#aaa]">Reach our gemologist directly</p>
+                <Link
                   to="/contact"
                   onClick={() => setMenuOpen(false)}
                   className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[#4a154b] py-3.5 text-[13px] font-bold text-white transition-all hover:bg-[#3a1038]"
                 >
-                  <ExternalLink size={14} strokeWidth={2.5} /> Contact Support
+                  <PhoneCall size={14} strokeWidth={2.5} /> Reach Us
                 </Link>
               </div>
 

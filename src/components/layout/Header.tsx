@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Search, ShoppingBag, User, X } from 'lucide-react';
+import { Menu, Search, ShoppingBag, X } from 'lucide-react';
 import { useUIStore, useCartStore } from '../../store/useStore';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../../lib/utils';
+import gemrakshaLogo from '../../images/gemraksha logo.jpeg';
 
 export const Header = () => {
   const { setMenuOpen, isMenuOpen, setCartOpen } = useUIStore();
@@ -50,7 +51,7 @@ export const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#c99652]/40 bg-primary text-white shadow-[0_12px_36px_rgba(48,11,71,0.18)]">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-[#c99652]/40 bg-primary text-white shadow-[0_12px_36px_rgba(48,11,71,0.18)]">
       <div className="mx-auto flex h-[60px] max-w-[1240px] items-center justify-between px-3 md:h-[72px] md:px-6">
 
         {/* Mobile: Hamburger | Desktop: Logo */}
@@ -64,25 +65,39 @@ export const Header = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} strokeWidth={1.5} />}
           </button>
 
-          <Link to="/" className="hidden flex-col leading-none md:flex">
-            <span className="font-serif text-[1.45rem] tracking-[0.12em] text-white lg:text-[2.15rem]">
-              GEMRAKSHA
-            </span>
-            <span className="ml-[0.12em] text-[0.45rem] font-medium tracking-[0.2em] text-white/80 lg:text-[0.58rem]">
-              CERTIFIED GEMS
-            </span>
+          <Link to="/" className="hidden items-center gap-2.5 md:flex">
+            <img
+              src={gemrakshaLogo}
+              alt="Gemraksha"
+              className="h-12 w-12 rounded-full object-cover lg:h-14 lg:w-14"
+            />
+            <div className="flex flex-col leading-none">
+              <span className="font-serif text-[1.1rem] tracking-[0.12em] text-white lg:text-[1.5rem]">
+                GEMRAKSHA
+              </span>
+              <span className="ml-[0.12em] text-[0.45rem] font-medium tracking-[0.2em] text-white/80 lg:text-[0.58rem]">
+                CERTIFIED GEMS
+              </span>
+            </div>
           </Link>
         </div>
 
         {/* Mobile: Centered Logo */}
         <div className="flex flex-[2] justify-center md:hidden">
-          <Link to="/" className="flex flex-col items-center leading-none">
-            <span className="font-serif text-[1.2rem] font-bold tracking-[0.2em] text-white">
-              GEMRAKSHA
-            </span>
-            <span className="mt-[2px] text-[0.4rem] font-bold tracking-[0.35em] text-white/80 uppercase">
-              Certified Gems
-            </span>
+          <Link to="/" className="flex items-center gap-2 leading-none">
+            <img
+              src={gemrakshaLogo}
+              alt="Gemraksha"
+              className="h-11 w-11 rounded-full object-cover"
+            />
+            <div className="flex flex-col items-start leading-none">
+              <span className="font-serif text-[1rem] font-bold tracking-[0.2em] text-white">
+                GEMRAKSHA
+              </span>
+              <span className="mt-[2px] text-[0.4rem] font-bold tracking-[0.35em] text-white/80 uppercase">
+                Certified Gems
+              </span>
+            </div>
           </Link>
         </div>
 
@@ -139,15 +154,6 @@ export const Header = () => {
               </button>
             </form>
           </div>
-
-          <button
-            type="button"
-            aria-label="Account"
-            onClick={() => navigate('/account')}
-            className="hidden rounded-full p-2.5 text-white/80 transition hover:bg-white/10 hover:text-white md:inline-flex"
-          >
-            <User size={18} />
-          </button>
 
           <button
             type="button"

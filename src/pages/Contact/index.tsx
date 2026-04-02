@@ -1,207 +1,140 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Phone, Mail } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { Phone, Mail, MapPin, Clock, MessageCircle, CalendarClock, ExternalLink } from 'lucide-react';
 
-export const Contact = () => {
-  const [selectedDate, setSelectedDate] = useState<number | null>(5);
-  const [selectedTime, setSelectedTime] = useState<string | null>('10:30 AM');
-  const [form, setForm] = useState({ name: '', phone: '', email: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  // Hardcoded calendar for October 2023 based on the design
-  const daysInMonth = Array.from({ length: 20 }, (_, i) => i + 1);
-  // Padding for the first row (starts on Wednesday in image)
-  const paddingDays = [null, null, null]; 
-  const allDays = [...paddingDays, ...daysInMonth];
-
-  const timeSlots = [
-    '09:00 AM', '10:30 AM', '01:00 PM',
-    '02:30 PM', '04:00 PM', '05:30 PM'
-  ];
-
-  const disabledSlots = ['04:00 PM'];
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedDate || !selectedTime || !form.name || !form.phone) return;
-    
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 1500);
-  };
-
+const Contact = () => {
   return (
-    <div className="min-h-screen bg-[#f8f6f0] pb-32">
-      <div className="w-full relative">
-        
-        {/* Header */}
-        <div className="pt-8 px-6 pb-6 text-center relative">
-          <div className="font-serif text-[1rem] tracking-[0.2em] font-bold text-[#251622] mb-6">
-            GEMRAKSHA
-          </div>
-          <h1 className="font-serif text-[2.1rem] leading-tight text-[#251622] mb-3">
-            Book a Private Viewing
-          </h1>
-          <p className="text-[12px] text-[#716863] leading-relaxed mx-auto max-w-[320px]">
-            Experience our premium collection in a personalized 1-on-1 video session with a certified gemologist.
+    <div className="min-h-screen bg-[#f8f4ee] pb-28">
+
+      {/* Hero */}
+      <div className="bg-gradient-to-br from-[#4a154b] to-[#6b2070] px-6 pt-12 pb-14 text-center">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#ecd0a1]/80 mb-3">Gemraksha Inc.</p>
+          <h1 className="font-serif text-[2.4rem] leading-tight text-white mb-3">Get in Touch</h1>
+          <p className="text-[13px] text-white/60 leading-relaxed max-w-[280px] mx-auto">
+            We're here to help you find the perfect stone for your journey.
           </p>
-        </div>
+        </motion.div>
+      </div>
 
-        <div className="px-5 space-y-7 pb-4">
-          
-          {/* Calendar Card */}
-          <div className="bg-white rounded-[20px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-black/[0.03]">
-            <div className="flex items-center justify-between mb-5 px-2">
-              <button type="button" className="text-[#999] p-1"><ChevronLeft size={16} strokeWidth={3} /></button>
-              <span className="font-bold text-[#251622] text-[14px]">October 2023</span>
-              <button type="button" className="text-[#555] p-1"><ChevronRight size={16} strokeWidth={3} /></button>
-            </div>
-            
-            <div className="grid grid-cols-7 text-center mb-4">
-              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
-                <div key={day} className="text-[10px] font-bold text-[#888]">{day}</div>
-              ))}
-            </div>
+      <div className="px-5 -mt-6 space-y-4">
 
-            <div className="grid grid-cols-7 gap-y-3 text-center text-[12px]">
-              {allDays.map((day, i) => (
-                <div key={i} className="flex justify-center items-center h-8">
-                  {day ? (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedDate(day)}
-                      className={`h-8 w-8 rounded-full flex items-center justify-center transition-all text-[12px] ${
-                        selectedDate === day 
-                          ? 'bg-[#d0a061] text-white font-bold shadow-md shadow-[#d0a061]/30' 
-                          : 'text-[#251622] hover:bg-black/5'
-                      }`}
-                    >
-                      {day}
-                    </button>
-                  ) : null}
-                </div>
-              ))}
+        {/* Owner Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
+          className="rounded-[20px] bg-white shadow-[0_8px_32px_rgba(74,21,75,0.1)] border border-[#f0eaf5] overflow-hidden"
+        >
+          <div className="bg-gradient-to-r from-[#d0a061]/10 to-[#ecd0a1]/10 px-5 py-4 border-b border-[#f5eedc]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d0a061]">Your Point of Contact</p>
+          </div>
+          <div className="px-5 py-5 flex items-center gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#4a154b] to-[#6b2070] text-white font-serif text-xl shadow-md">
+              A
+            </div>
+            <div>
+              <p className="font-serif text-[18px] text-[#251622] leading-tight">Aravind</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#d0a061] mt-0.5">Founder · Gemraksha Inc.</p>
+              <p className="text-[11px] text-[#9d8fa0] mt-1">Certified Gemologist · Vedic Astrologer</p>
             </div>
           </div>
+        </motion.div>
 
-          {/* Time Slots */}
-          <div className="px-1">
-            <h3 className="font-serif font-bold text-[#251622] text-[15px] mb-3">Available Time Slots</h3>
-            <div className="grid grid-cols-3 gap-2.5">
-              {timeSlots.map((time) => {
-                const isDisabled = disabledSlots.includes(time);
-                const isSelected = selectedTime === time;
-                
-                return (
-                  <button
-                    key={time}
-                    type="button"
-                    disabled={isDisabled}
-                    onClick={() => setSelectedTime(time)}
-                    className={`py-2.5 rounded-xl text-[11px] font-medium transition-all ${
-                      isDisabled
-                        ? 'border border-[#f0f0f0] text-[#ccc] bg-transparent cursor-not-allowed opacity-50'
-                        : isSelected
-                        ? 'border border-[#d0a061] text-[#d0a061] bg-[#d0a061]/5 font-bold shadow-sm'
-                        : 'border border-[#eaeaea] text-[#716863] bg-white hover:border-[#d0a061]/40'
-                    }`}
-                  >
-                    {time}
-                  </button>
-                );
-              })}
-            </div>
+        {/* Contact Methods */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
+          className="rounded-[20px] bg-white shadow-[0_8px_32px_rgba(74,21,75,0.07)] border border-[#f0eaf5] overflow-hidden"
+        >
+          <div className="px-5 py-4 border-b border-[#f5f0f8]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#8d7a8f]">Contact Details</p>
           </div>
 
-          {/* Details Form */}
-          <form id="booking-form" onSubmit={handleSubmit} className="px-1 space-y-3">
-            <h3 className="font-serif font-bold text-[#251622] text-[15px] mb-3">Your Details</h3>
-            
-            <div className="relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a8a09b]">
-                <User size={16} strokeWidth={2} />
-              </div>
-              <input 
-                type="text" 
-                required
-                value={form.name}
-                onChange={(e) => setForm({...form, name: e.target.value})}
-                placeholder="Full Name" 
-                className="w-full bg-white border border-[#eaeaea] rounded-[14px] py-4 pl-11 pr-4 text-[13px] text-[#251622] placeholder:text-[#b8b0ab] focus:outline-none focus:border-[#d0a061] transition-colors"
-              />
+          {/* Phone */}
+          <a href="tel:+919966637182"
+            className="flex items-center gap-4 px-5 py-4 border-b border-[#f5f0f8] active:bg-[#fdf8f2] transition-colors">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ecd0a1]/20 text-[#d0a061]">
+              <Phone size={18} strokeWidth={1.8} />
             </div>
-            
-            <div className="relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a8a09b]">
-                <Phone size={16} strokeWidth={2} />
-              </div>
-              <input 
-                type="tel" 
-                required
-                value={form.phone}
-                onChange={(e) => setForm({...form, phone: e.target.value})}
-                placeholder="Phone Number" 
-                className="w-full bg-white border border-[#eaeaea] rounded-[14px] py-4 pl-11 pr-4 text-[13px] text-[#251622] placeholder:text-[#b8b0ab] focus:outline-none focus:border-[#d0a061] transition-colors"
-              />
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#8d7a8f]">Phone</p>
+              <p className="text-[15px] font-semibold text-[#251622] mt-0.5">+91 99666 37182</p>
             </div>
-            
-            <div className="relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a8a09b]">
-                <Mail size={16} strokeWidth={2} />
-              </div>
-              <input 
-                type="email" 
-                value={form.email}
-                onChange={(e) => setForm({...form, email: e.target.value})}
-                placeholder="Email Address (Optional)" 
-                className="w-full bg-white border border-[#eaeaea] rounded-[14px] py-4 pl-11 pr-4 text-[13px] text-[#251622] placeholder:text-[#b8b0ab] focus:outline-none focus:border-[#d0a061] transition-colors"
-              />
-            </div>
+            <ExternalLink size={14} className="text-[#c5b0c8] shrink-0" strokeWidth={2} />
+          </a>
 
-            <div className="bg-[#f2ecdc] border border-[#e6decd] rounded-[14px] p-3.5 flex items-start gap-3 mt-4">
-              <div className="text-[#c19954] mt-0.5 shrink-0">
-                 <Info size={16} strokeWidth={2.5} />
-              </div>
-              <p className="text-[10px] text-[#716863] leading-relaxed">
-                A zoom link will be sent to your provided number 15 minutes before the scheduled time.
-              </p>
+          {/* WhatsApp */}
+          <a href="https://wa.me/919966637182" target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-4 px-5 py-4 border-b border-[#f5f0f8] active:bg-[#f0fdf4] transition-colors">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25D366]/10 text-[#25D366]">
+              <MessageCircle size={18} strokeWidth={1.8} />
             </div>
-          </form>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#8d7a8f]">WhatsApp</p>
+              <p className="text-[15px] font-semibold text-[#251622] mt-0.5">+91 99666 37182</p>
+            </div>
+            <ExternalLink size={14} className="text-[#c5b0c8] shrink-0" strokeWidth={2} />
+          </a>
 
-        </div>
+          {/* Email */}
+          <a href="mailto:info@gemraksha.com"
+            className="flex items-center gap-4 px-5 py-4 active:bg-[#fdf8f2] transition-colors">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#4a154b]/8 text-[#4a154b]">
+              <Mail size={18} strokeWidth={1.8} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#8d7a8f]">Email</p>
+              <p className="text-[15px] font-semibold text-[#251622] mt-0.5">info@gemraksha.com</p>
+            </div>
+            <ExternalLink size={14} className="text-[#c5b0c8] shrink-0" strokeWidth={2} />
+          </a>
+        </motion.div>
 
-        {/* Sticky Footer Button */}
-        <div className="fixed bottom-[72px] left-0 right-0 p-5 bg-white border-t border-[#f0f0f0] shadow-[0_-10px_30px_rgba(0,0,0,0.03)] z-50">
-          <AnimatePresence mode="wait">
-            {isSuccess ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                key="success"
-                className="w-full bg-[#1b4332] text-white py-4 rounded-[14px] flex items-center justify-center gap-2 font-bold text-[14px] shadow-lg"
-              >
-                <CheckCircle2 size={18} /> Booking Confirmed
-              </motion.div>
-            ) : (
-              <motion.button
-                key="submit"
-                form="booking-form"
-                type="submit"
-                disabled={isSubmitting || !selectedDate || !selectedTime || !form.name || !form.phone}
-                className="w-full bg-[#cda052] text-white py-4 rounded-[14px] flex items-center justify-center gap-2 font-bold text-[15px] shadow-[0_4px_14px_rgba(205,160,82,0.4)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:shadow-none"
-              >
-                {isSubmitting ? (
-                   <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>Confirm Booking <ChevronRight size={18} strokeWidth={2.5} /></>
-                )}
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* Location & Hours */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
+          className="rounded-[20px] bg-white shadow-[0_8px_32px_rgba(74,21,75,0.07)] border border-[#f0eaf5] overflow-hidden"
+        >
+          <div className="flex items-center gap-4 px-5 py-4 border-b border-[#f5f0f8]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ecd0a1]/20 text-[#d0a061]">
+              <MapPin size={18} strokeWidth={1.8} />
+            </div>
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#8d7a8f]">Location</p>
+              <p className="text-[14px] font-semibold text-[#251622] mt-0.5">Hyderabad, Telangana</p>
+              <p className="text-[11px] text-[#9d8fa0]">India · 500001</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 px-5 py-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#4a154b]/8 text-[#4a154b]">
+              <Clock size={18} strokeWidth={1.8} />
+            </div>
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#8d7a8f]">Business Hours</p>
+              <p className="text-[14px] font-semibold text-[#251622] mt-0.5">Mon – Sat, 9 AM – 7 PM</p>
+              <p className="text-[11px] text-[#9d8fa0]">Sunday by appointment only</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Book a Call CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}
+          className="rounded-[20px] bg-gradient-to-br from-[#4a154b] to-[#6b2070] p-5 shadow-[0_8px_32px_rgba(74,21,75,0.25)]"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-[#ecd0a1]">
+              <CalendarClock size={18} strokeWidth={1.8} />
+            </div>
+            <div>
+              <p className="text-[13px] font-bold text-white leading-tight">Want a personalized consultation?</p>
+              <p className="text-[11px] text-white/60 mt-0.5">Book a 1-on-1 call with our gemologist</p>
+            </div>
+          </div>
+          <Link to="/book-call"
+            className="flex w-full items-center justify-center gap-2 rounded-[14px] bg-[#d0a061] py-3.5 text-[12px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_4px_14px_rgba(208,160,97,0.4)] active:scale-[0.98] transition-all">
+            <CalendarClock size={15} strokeWidth={2.5} /> Book a Call
+          </Link>
+        </motion.div>
 
       </div>
     </div>

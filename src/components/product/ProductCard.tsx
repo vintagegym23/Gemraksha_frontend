@@ -11,18 +11,22 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const addItem = useCartStore((s) => s.addItem);
-  const addToast = useUIStore((s) => s.addToast);
-
-  const handleBuyNow = (e: React.MouseEvent) => {
-    e.preventDefault();
-    addItem(product);
-    navigate('/cart', { state: { confetti: true } });
-  };
+  const { addToast, setCartOpen, setCartConfetti } = useUIStore();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addItem(product);
-    navigate('/cart', { state: { confetti: true } });
+    addToast(`${product.name} added to cart`);
+    setCartConfetti(true);
+    setCartOpen(true);
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addItem(product);
+    addToast(`${product.name} added to cart`);
+    setCartConfetti(true);
+    setCartOpen(true);
   };
 
   const formatPrice = (price: number) => {

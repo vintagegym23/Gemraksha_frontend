@@ -120,7 +120,7 @@ export const About = () => {
         {/* Decorative top label */}
         <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10">
           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/60 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-            Est. 2010 · Jaipur, India
+            Est. 2010 · Hyderabad, India
           </span>
         </div>
 
@@ -152,7 +152,7 @@ export const About = () => {
       <section className="bg-gradient-to-r from-[#4a154b] via-[#5c1c5d] to-[#3a0e3b]">
         <div className="mx-auto max-w-[1100px] grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
           <Stat value="1500+" label="Gems Certified" icon={<Gem size={20} strokeWidth={1.5} />} />
-          <Stat value="15+"  label="Years of Legacy" icon={<Award size={20} strokeWidth={1.5} />} />
+          <Stat value="16+"  label="Years of Legacy" icon={<Award size={20} strokeWidth={1.5} />} />
           <Stat value="98%"  label="Happy Customers" icon={<Heart size={20} strokeWidth={1.5} />} />
           <Stat value="12+"  label="Countries Served" icon={<MapPin size={20} strokeWidth={1.5} />} />
         </div>
@@ -165,11 +165,11 @@ export const About = () => {
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#d0a061] mb-4">Who We Are</p>
               <h2 className="font-serif text-[2.5rem] md:text-[3.2rem] leading-tight text-[#251622] mb-6">
-                A Legacy Born<br />in the Heart of Jaipur
+                A Legacy Born<br />in the Heart of Hyderabad
               </h2>
               <div className="space-y-4 text-[14px] leading-relaxed text-[#6b5d56]">
                 <p>
-                  Founded in 2010, GEMRAKSHA was born from a lifelong devotion to the ancient art of gemology. Our founders, third-generation jewelers from Jaipur — the gem capital of the world — set out to bring certified, ethically sourced stones directly to those who seek both beauty and spiritual alignment.
+                  Founded in 2010, GEMRAKSHA was born from a lifelong devotion to the ancient art of gemology. Our founders, third-generation jewelers from Hyderabad the gem capital of the world set out to bring certified, ethically sourced stones directly to those who seek both beauty and spiritual alignment.
                 </p>
                 <p>
                   We believe a gemstone is not merely an adornment. It is a conduit for energy, a symbol of intention, and a piece of the Earth's most extraordinary artistry. Every stone we carry has been hand-selected, lab-certified, and energized with Vedic rituals.
@@ -220,7 +220,7 @@ export const About = () => {
             <PromiseCard
               icon={<ShieldCheck size={24} strokeWidth={1.8} />}
               title="100% Certified"
-              desc="Every gem arrives with an internationally recognized certificate of authenticity — GIA, IGI, or GRS certified."
+              desc="Every gem arrives with an internationally recognized certificate of authenticity GIA, IGI, or GRS certified."
               accent="bg-gradient-to-br from-[#4a154b] to-[#6b2070]"
             />
             <PromiseCard
@@ -265,7 +265,7 @@ export const About = () => {
             <h2 className="font-serif text-[2.5rem] md:text-[3rem] text-[#251622]">From Mine to You</h2>
           </div>
           <p className="max-w-sm text-[13px] text-[#8d8078] leading-relaxed italic">
-            "We oversee every step — from ethical sourcing to the final Vedic energization that leaves our atelier."
+            "We oversee every step from ethical sourcing to the final Vedic energization that leaves our atelier."
           </p>
         </FadeUp>
 
@@ -282,7 +282,7 @@ export const About = () => {
           />
           <ProcessStep
             num="03" img={finishedRing} label="Vedic Energization"
-            desc="Before dispatch, each stone undergoes a traditional Vedic puja ritual — charged under specific planetary alignments for maximum potency."
+            desc="Before dispatch, each stone undergoes a traditional Vedic puja ritual charged under specific planetary alignments for maximum potency."
             delay={0.24}
           />
         </div>
@@ -314,7 +314,7 @@ export const About = () => {
             ))}
           </div>
           <blockquote className="font-serif text-[1.5rem] md:text-[2rem] italic text-white leading-snug mb-6">
-            "The Blue Sapphire I received was beyond stunning. The certification, the energization letter, and the packaging — every detail felt premium and thoughtful."
+            "The Blue Sapphire I received was beyond stunning. The certification, the energization letter, and the packaging every detail felt premium and thoughtful."
           </blockquote>
           <p className="text-[12px] font-bold uppercase tracking-[0.25em] text-[#d0a061]">
             Meera R. · Bangalore

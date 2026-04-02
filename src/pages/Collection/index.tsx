@@ -5,6 +5,17 @@ import { api } from '../../services/api';
 import { Product, Category } from '../../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { useCartStore, useUIStore } from '../../store/useStore';
+import rudrakshaB  from '../../images/products/rudraksha/banner.png';
+import ringsBg     from '../../images/yellow_sapphire.png';
+import gemsBg      from '../../images/burma_ruby.png';
+import braceletsBg from '../../images/products/bracelets/amethyst.png';
+
+const CATEGORY_BG: Record<string, string> = {
+  gemstones: gemsBg,
+  rudraksha:  rudrakshaB,
+  rings:      ringsBg,
+  bracelets:  braceletsBg,
+};
 
 const QUICK_FILTERS = {
   gemstones: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '9+'].map((l) => ({ label: l, sub: 'CARAT' })),
@@ -26,7 +37,10 @@ const Collection = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedQuickFilter, setSelectedQuickFilter] = useState<number | null>(null);
   const tabsContainerRef = useRef<HTMLDivElement>(null);
-  const activeTabRef = useRef<HTMLButtonElement>(null);
+  const activeTabRef     = useRef<HTMLButtonElement>(null);
+  const heroRef          = useRef<HTMLDivElement>(null);
+  const bgImgRef         = useRef<HTMLImageElement>(null);
+  const bgOverlayRef     = useRef<HTMLDivElement>(null);
 
   const activeCategory = searchParams.get('category');
   const activeSearch = searchParams.get('search')?.trim() ?? '';
@@ -88,6 +102,28 @@ const Collection = () => {
     }
   }, [activeCategory, categories]);
 
+  /* Parallax + fade-to-white on mobile hero */
+  useEffect(() => {
+    const onScroll = () => {
+      const hero = heroRef.current;
+      const img  = bgImgRef.current;
+      const wht  = bgOverlayRef.current;
+      if (!hero || !img || !wht) return;
+
+      const scrollY    = window.scrollY;
+      const heroH      = hero.offsetHeight;
+      // Parallax: image drifts up at 25% of scroll speed
+      img.style.transform = `scale(1.15) translateY(${scrollY * 0.22}px)`;
+      // White overlay fades IN — starts at 25% of hero height, fully opaque at 85%
+      const fadeStart  = heroH * 0.25;
+      const fadeEnd    = heroH * 0.82;
+      const opacity    = Math.max(0, Math.min(1, (scrollY - fadeStart) / (fadeEnd - fadeStart)));
+      wht.style.opacity = String(opacity);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const handleCategoryChange = (slug: string | null) => {
     const nextParams = new URLSearchParams();
     if (slug) nextParams.set('category', slug);
@@ -122,57 +158,86 @@ const Collection = () => {
     <div className="min-h-screen bg-[#f8f4ee]">
 
       {/* ─── MOBILE: HERO HEADER ─── */}
-      <div className="bg-white px-5 pt-8 pb-6 text-center border-b border-gray-100 md:hidden">
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="font-serif text-[2.2rem] text-[#251622] leading-tight"
-        >
-          {title}
-        </motion.h1>
-        <p className="mt-3 text-[12.5px] leading-relaxed text-[#7a6b63] max-w-[300px] mx-auto">
-          {description}
-        </p>
-        <div className="mt-6 flex gap-3 justify-center">
-          <button
-            type="button"
-            onClick={() => setIsFilterOpen(true)}
-            className="flex flex-1 max-w-[160px] items-center justify-center gap-2 rounded-[12px] bg-[#4a154b] py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white shadow-sm transition-all active:scale-95"
-          >
-            <SlidersHorizontal size={14} strokeWidth={2.5} />
-            Filter
-          </button>
-          <button
-            type="button"
-            className="flex flex-1 max-w-[160px] items-center justify-center gap-2 rounded-[12px] border border-[#c5b8b0] bg-white py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#251622] transition-all active:scale-95"
-          >
-            <ArrowUpDown size={14} strokeWidth={2.5} />
-            Sort
-          </button>
-        </div>
-        {(activeCategory || activeSearch || selectedQuickFilter !== null) && (
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            {selectedCategoryObj && (
-              <span className="rounded-full bg-[#4a154b]/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#4a154b] border border-[#4a154b]/15">
-                {selectedCategoryObj.name}
-              </span>
+      {(() => {
+        const hasBg = !!activeCategory && !!CATEGORY_BG[activeCategory.toLowerCase()];
+        return (
+          <div ref={heroRef} className={`relative md:hidden overflow-hidden ${hasBg ? '' : 'bg-white border-b border-gray-100'}`}>
+
+            {/* Dynamic background image with parallax — only when a known category is active */}
+            {hasBg && (
+              <>
+                <img
+                  ref={bgImgRef}
+                  key={activeCategory}
+                  src={CATEGORY_BG[activeCategory!.toLowerCase()]}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full object-cover scale-[1.15] pointer-events-none"
+                  style={{ willChange: 'transform', transformOrigin: 'top center' }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 pointer-events-none" />
+                <div ref={bgOverlayRef} className="absolute inset-0 bg-[#f8f4ee] pointer-events-none" style={{ opacity: 0 }} />
+              </>
             )}
-            {activeSearch && (
-              <span className="rounded-full bg-[#d0a061]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#b88c50] border border-[#d0a061]/20">
-                {activeSearch}
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#999] hover:text-[#4a154b] transition-colors ml-1"
-            >
-              Clear All
-            </button>
+
+            {/* Content */}
+            <div className="relative z-10 px-5 pt-8 pb-6 text-center">
+              <motion.h1
+                key={title}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className={`font-serif text-[2.2rem] leading-tight ${hasBg ? 'text-white' : 'text-[#251622]'}`}
+                style={hasBg ? { textShadow: '0 2px 16px rgba(0,0,0,0.45)' } : {}}
+              >
+                {title}
+              </motion.h1>
+              <p className={`mt-3 text-[12.5px] leading-relaxed max-w-[300px] mx-auto ${hasBg ? 'text-white/75' : 'text-[#7a6b63]'}`}
+                style={hasBg ? { textShadow: '0 1px 8px rgba(0,0,0,0.4)' } : {}}>
+                {description}
+              </p>
+              <div className="mt-6 flex gap-3 justify-center">
+                <button
+                  type="button"
+                  onClick={() => setIsFilterOpen(true)}
+                  className="flex flex-1 max-w-[160px] items-center justify-center gap-2 rounded-[12px] bg-[#4a154b] py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white shadow-sm transition-all active:scale-95"
+                >
+                  <SlidersHorizontal size={14} strokeWidth={2.5} />
+                  Filter
+                </button>
+                <button
+                  type="button"
+                  className="flex flex-1 max-w-[160px] items-center justify-center gap-2 rounded-[12px] border border-[#c5b8b0] bg-white py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#251622] transition-all active:scale-95"
+                >
+                  <ArrowUpDown size={14} strokeWidth={2.5} />
+                  Sort
+                </button>
+              </div>
+              {(activeCategory || activeSearch || selectedQuickFilter !== null) && (
+                <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                  {selectedCategoryObj && (
+                    <span className={`rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] border ${hasBg ? 'bg-white/20 backdrop-blur-sm text-white border-white/30' : 'bg-[#4a154b]/5 text-[#4a154b] border-[#4a154b]/15'}`}>
+                      {selectedCategoryObj.name}
+                    </span>
+                  )}
+                  {activeSearch && (
+                    <span className={`rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] border ${hasBg ? 'bg-[#d0a061]/70 text-white border-[#d0a061]/50' : 'bg-[#d0a061]/10 text-[#b88c50] border-[#d0a061]/20'}`}>
+                      {activeSearch}
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className={`text-[10px] font-bold uppercase tracking-[0.15em] ml-1 ${hasBg ? 'text-white/70' : 'text-[#999] hover:text-[#4a154b]'}`}
+                  >
+                    Clear All
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        )}
-      </div>
+        );
+      })()}
 
       {/* ─── MOBILE: SCROLLABLE TABS ─── */}
       <div className="sticky top-[60px] z-40 bg-white border-b border-gray-100 px-3 py-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] md:hidden">
